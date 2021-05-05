@@ -1,0 +1,28 @@
+.toolbar {
+  background-color: #eeee;
+  position: fixed;
+  z-index: 1000;
+  width: 100vw;
+
+}
+
+.bar-container {
+  height: 100%;
+  width: 100%;
+  color: #800322;
+}
+
+.close {
+  cursor: pointer;
+  padding-right: 10px;
+  color: #800322;
+  font-size: 20px;
+}
+
+.logo-short {
+  width: 100px;
+}
+
+.logo--width {
+  width: 250px
+}

@@ -1,0 +1,18 @@
+<mat-card fxFlex class="one-liner-card">
+
+  <mat-card-content>
+
+    <div (click)="onSelect.next()">
+      <p class="one-liner-card-content">
+        {{oneLiner.oneLiner}}
+      </p>
+    </div>
+
+    <div class="votes-container" fxLayout="column" fxLayoutAlign="center center" (click)="onLike()">
+      <i *ngIf="liked" class="material-icons votes-container-icon" fxLayoutAlign="center center">favorite</i>
+      <i *ngIf="!liked" class="material-icons votes-container-icon" fxLayoutAlign="center center">favorite_outline</i>
+      {{ oneLiner.numUpVotes}}
+    </div>
+
+  </mat-card-content>
+</mat-card>
