@@ -40,10 +40,11 @@ export class AuthService {
 
   baseUrl = environment.serverEndpoint
   apigClient = null;
-  crypto = require('crypto');
+  // crypto = require('crypto');
 
   constructor(private http: HttpClient, private router: Router, private apiService: ApiService) {
     this.apigClient = apiService.initialize();
+    console.log(this.apigClient)
   }
 
   isAuth() {
@@ -89,9 +90,7 @@ export class AuthService {
     let params = { "username": username }
     let additionalParams = {}
     let path = "/" + username
-    this.apigClient.invokeApi(params, path, method, additionalParams, body)
-      .then(res => console.log(res))
-      .catch(error => console.log(error))
+    return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
   // login(username: string, password: string) {
@@ -110,6 +109,16 @@ export class AuthService {
     this.apigClient.invokeApi(params, path, method, {}, body)
       .then(res => console.log(res))
       .catch(error => console.log(error))
+  }
+
+  getUserFromDb(username: string) {
+    let data = {}
+    let method = "GET"
+    let body = this.apiService.getRequestBody(method, data)
+    let params = { "username": username }
+    let additionalParams = {}
+    let path = "/" + username
+    return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
   updatePassword(username: string, newPassword: string) {

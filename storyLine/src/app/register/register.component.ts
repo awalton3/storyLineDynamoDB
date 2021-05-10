@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    console.log("in register");
+
   }
 
   initForm() {
@@ -28,17 +28,34 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  // onSubmit() {
+  //   this.authService.register(this.registerForm.value.username, this.registerForm.value.email, this.registerForm.value.password)
+  //     .subscribe(res => {
+  //       console.log(res)
+  //       // this.authService.clearUser();
+  //       // this.navigateToLogin()
+  //     }, error => {
+  //       console.log(error)
+  //       // if (error.statusText === 'Created')
+  //       //   this.handleError("An account with this username already exists.")
+  //       // else
+  //       //   console.log(error)
+  //     })
+  // }
+
   onSubmit() {
     this.authService.register(this.registerForm.value.username, this.registerForm.value.email, this.registerForm.value.password)
-      // .subscribe(res => {
-      //   this.authService.clearUser();
-      //   this.navigateToLogin()
-      // }, error => {
-      //   if (error.statusText === 'Created')
-      //     this.handleError("An account with this username already exists.")
-      //   else
-      //     console.log(error)
-      // })
+      .then(res => {
+        if (res.status == 200) {
+          this.navigateToLogin()
+        } else { //error
+          console.log(res.statusText)
+          this.handleError(res.statusText)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   handleError(error) {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment'
 
 declare function require(name:string);
+var querystring = require('querystring');
 
 @Injectable({
   providedIn: 'root'

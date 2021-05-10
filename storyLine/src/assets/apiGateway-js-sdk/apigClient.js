@@ -53,7 +53,7 @@ apigClientFactory.newClient = function (config) {
 
     
     // extract endpoint and path from url
-    var invokeUrl = 'https://eu0h5210m1.execute-api.us-east-1.amazonaws.com/test';
+    var invokeUrl = 'https://z3hgzqq91e.execute-api.us-east-1.amazonaws.com/auth';
     var endpoint = /(^https?:\/\/[^\/]+)/g.exec(invokeUrl)[1];
     var pathComponent = invokeUrl.substring(endpoint.length);
 
@@ -83,39 +83,57 @@ apigClientFactory.newClient = function (config) {
     
     
     
-    apigClient.nameGet = function (params, body, additionalParams) {
+    apigClient.usernameGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['name'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['username'], ['body']);
         
-        var nameGetRequest = {
+        var usernameGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/{name}').expand(apiGateway.core.utils.parseParametersToObject(params, ['name'])),
+            path: pathComponent + uritemplate('/{username}').expand(apiGateway.core.utils.parseParametersToObject(params, ['username'])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(nameGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(usernameGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.nameOptions = function (params, body, additionalParams) {
+    apigClient.usernamePost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['username'], ['body']);
+        
+        var usernamePostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/{username}').expand(apiGateway.core.utils.parseParametersToObject(params, ['username'])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(usernamePostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.usernameOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var nameOptionsRequest = {
+        var usernameOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/{name}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/{username}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(nameOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(usernameOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
 
