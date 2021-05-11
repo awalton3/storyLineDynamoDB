@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 
 declare function require(name:string);
 var querystring = require('querystring');
+var shajs = require('sha.js')
 
 //Initiate API SDK
 // declare function require(name:string);
@@ -40,7 +41,7 @@ export class AuthService {
 
   baseUrl = environment.serverEndpoint
   apigClient = null;
-  // crypto = require('crypto');
+  //crypto = require('crypto');
 
   constructor(private http: HttpClient, private router: Router, private apiService: ApiService) {
     this.apigClient = apiService.initialize();
@@ -84,7 +85,10 @@ export class AuthService {
   // }
 
   register(username: string, email: string, password: string) {
-    let data = { "email": email, "hashedPassword": password }
+    // Hash password
+    var hashedPassword = shajs('sha256').update(password).digest('hex')
+
+    let data = { "email": email, "hashedPassword": hashedPassword }
     let method = "POST"
     let body = this.apiService.getRequestBody(method, data)
     let params = { "username": username }
@@ -93,26 +97,39 @@ export class AuthService {
     return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
-  // login(username: string, password: string) {
-  //   return this.http.post(this.baseUrl + "/selectAcct.php", {
-  //     username: username,
-  //     plaintextPwd: password
-  //   })
-  // }
-
   login(username: string, password: string) {
-    let data = {}
-    let method = "GET"
-    let body = this.apiService.getRequestBody(method, data)
-    let params = { "username": username }
-    let path = "/" + username
-    this.apigClient.invokeApi(params, path, method, {}, body)
-      .then(res => console.log(res))
+    // Hash input password
+    var hash = shajs('sha256').update(password).digest('hex')
+    
+    // Get user from Dynamo
+    return this.getUserFromDb(username)
+      .then(user => {
+        // Compare passwords
+        console.log(user.data)
+        console.log(user.data.Item.hashedPassword.S)
+        console.log(hash)
+        let enteredPass = user.data.Item.hashedPassword.S
+        let name = user.data.Item.username.S
+        let email = user.data.Item.email.S
+        console.log(name)
+
+        if (enteredPass) {
+          if (enteredPass == hash) {
+            console.log('success')
+            let userObj = {"username": name, "email": email}
+            return Promise.resolve(userObj)
+          }
+          else {
+            console.log('fail!!')
+            return Promise.reject()
+          }
+        }
+      })
       .catch(error => console.log(error))
   }
 
   getUserFromDb(username: string) {
-    let data = {}
+    let data = {"username": username}
     let method = "GET"
     let body = this.apiService.getRequestBody(method, data)
     let params = { "username": username }

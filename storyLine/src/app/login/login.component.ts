@@ -37,6 +37,17 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
+      .then(result => {
+        console.log(result)
+        if (result) {
+          this.authService.setUser(result.username, result.email)
+          this.router.navigate(['./home'])
+        }
+        else {
+          this.handleError("Invalid username or password")
+        }
+      })
+      .catch(error => console.log(error))
       // .subscribe(res => {
       //   if (res && !res[0]['valid']) {
       //     this.handleError("Invalid username or password");
