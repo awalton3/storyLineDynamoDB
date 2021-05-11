@@ -41,11 +41,12 @@ export class AuthService {
 
   baseUrl = environment.serverEndpoint
   apigClient = null;
+  apiBaseResourcePath = '/accounts'
   //crypto = require('crypto');
 
   constructor(private http: HttpClient, private router: Router, private apiService: ApiService) {
     this.apigClient = apiService.initialize();
-    console.log(this.apigClient)
+    //console.log(this.apigClient)
   }
 
   isAuth() {
@@ -87,20 +88,19 @@ export class AuthService {
   register(username: string, email: string, password: string) {
     // Hash password
     var hashedPassword = shajs('sha256').update(password).digest('hex')
-
     let data = { "email": email, "hashedPassword": hashedPassword }
     let method = "POST"
     let body = this.apiService.getRequestBody(method, data)
     let params = { "username": username }
     let additionalParams = {}
-    let path = "/" + username
+    let path = this.apiBaseResourcePath + "/" + username
     return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
   login(username: string, password: string) {
     // Hash input password
     var hash = shajs('sha256').update(password).digest('hex')
-    
+
     // Get user from Dynamo
     return this.getUserFromDb(username)
       .then(user => {
@@ -134,7 +134,7 @@ export class AuthService {
     let body = this.apiService.getRequestBody(method, data)
     let params = { "username": username }
     let additionalParams = {}
-    let path = "/" + username
+    let path =this.apiBaseResourcePath + "/" + username
     return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 

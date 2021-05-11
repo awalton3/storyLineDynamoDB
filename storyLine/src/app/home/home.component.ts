@@ -35,9 +35,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getOneLiners() {
-    this.subs.add(this.sql.getOneLiners().subscribe(oneLiners => {
-      this.oneLiners = oneLiners
-    }));
+    // this.subs.add(this.sql.getOneLiners().subscribe(oneLiners => {
+    //   this.oneLiners = oneLiners
+    // }));
+    this.sql.getOneLiners()
+      .then(res => this.oneLiners = res.data.Items)
+      .catch(error => console.log(error))
   }
 
   listenForOneLiners() {
@@ -73,9 +76,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       "authorUsername": sessionStorage.getItem('username'),
       "numUpVotes": 0
     }
-    this.sql.insertOneLiner(newOneLiner).subscribe(res => {
+    this.sql.insertOneLiner(newOneLiner).then(res => {
       this.getOneLiners();
-    }, error => console.log(error))
+    }).catch(error => console.log(error))
   }
 
   fetchStories(oneLinerObj) {
