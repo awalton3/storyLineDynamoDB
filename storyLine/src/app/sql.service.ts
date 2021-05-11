@@ -61,7 +61,21 @@ export class SQLService {
   }
 
   insertStory(storyObj): any {
-    return this.http.post(`${this.baseUrl}/insertStory.php`, storyObj);
+    console.log(storyObj)
+    // return this.http.post(`${this.baseUrl}/insertStory.php`, storyObj);
+    let data = {
+      "storyHashID": shajs('sha256').update(storyObj.story).digest('hex'),
+      "oneLiner": storyObj.oneLiner,
+      "numUpVotes": storyObj.numUpVotes.toString(),
+      "authorUsername": storyObj.numUpVotes.toString(),
+      "timestamp": storyObj.timestamp
+    }
+    let method = "POST"
+    let body = this.apiService.getRequestBody(method, data)
+    let params = {}
+    let additionalParams = {}
+    let path = "/stories"
+    return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
   updateOneLinerNumUpVotes(oneLinerObj): any {
