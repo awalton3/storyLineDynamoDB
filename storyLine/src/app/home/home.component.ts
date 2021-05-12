@@ -86,8 +86,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('oneLiner', oneLinerObj.oneLiner)
     this.sql.getStoriesByOneLiner(oneLinerObj)
       .then(res => {
+        console.log(res)
         this.selectedStories = res.data.Items;
         let stories = res.data.Items
+        console.log(stories)
         this.openStoriesView(stories, oneLinerObj.oneLiner)
         this.selectedOneliner = oneLinerObj.oneLiner
         this.sql.selectedOneliner = oneLinerObj.oneLiner

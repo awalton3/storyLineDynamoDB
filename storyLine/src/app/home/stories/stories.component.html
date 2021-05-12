@@ -10,7 +10,7 @@
         <div class="stories-card-header-info">
           <p *ngIf="!story.writtenAnon" style="font-weight: 800;">{{ story.authorUsername }}</p>
           <p *ngIf="story.writtenAnon" style="font-weight: 800;">Anonymous User</p>
-          <p class="timestamp">{{ story.timestamp | date }}</p>
+          <p class="timestamp">{{ story.timestamp }}</p>
         </div>
       </div>
       <div *ngIf="!me && !story.writtenAnon">

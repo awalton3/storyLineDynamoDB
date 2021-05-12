@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SQLService } from '../../sql.service';
 import { Subscription } from 'rxjs';
+var shajs = require('sha.js')
 
 @Component({
   selector: 'app-stories',

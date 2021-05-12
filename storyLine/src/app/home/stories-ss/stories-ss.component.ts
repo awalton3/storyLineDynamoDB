@@ -22,7 +22,8 @@ export class StoriesSsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sql.dialogueRef = this.dialogRef; 
+    console.log(this.data)
+    this.sql.dialogueRef = this.dialogRef;
     this.storiesExist = this.data.stories.length ? true : false;
     this.toolbarContent = this.data.oneLiner;
   }

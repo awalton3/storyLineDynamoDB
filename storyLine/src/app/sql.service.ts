@@ -61,13 +61,17 @@ export class SQLService {
   }
 
   insertStory(storyObj): any {
+    console.log(storyObj)
     // return this.http.post(`${this.baseUrl}/insertStory.php`, storyObj);
     let data = {
-      "storyHashID": shajs('sha256').update(storyObj.story).digest('hex'),
+      "storyHashID": shajs('sha256').update(storyObj.content).digest('hex'),
       "oneLiner": storyObj.oneLiner,
       "numUpVotes": storyObj.numUpVotes.toString(),
-      "authorUsername": storyObj.numUpVotes.toString(),
-      "timestamp": storyObj.timestamp
+      "authorUsername": storyObj.authorUsername,
+      "timestamp": storyObj.timestamp,
+      "writtenAnon": storyObj.writtenAnon.toString(),
+      "content": storyObj.content
+      //TODO: add this back in and fix template (type errors) - "writtenAnon": storyObj.writtenAnon
     }
     let method = "POST"
     let body = this.apiService.getRequestBody(method, data)
@@ -81,17 +85,24 @@ export class SQLService {
     return this.http.put(`${this.baseUrl}/updateOneLinerNumUpVotes.php`, oneLinerObj);
   }
 
-  selectStoryByOneLiner(oneLinerObj) {
-    return this.http.put(`${this.baseUrl}/selectStoryByOneLiner.php`, oneLinerObj)
-  }
+  // selectStoryByOneLiner(oneLinerObj) {
+  //   let data = {}
+  //   let method = "GET"
+  //   let body = this.apiService.getRequestBody(method, data)
+  //   let params = {"oneLiner": oneLinerObj.oneLiner}
+  //   let additionalParams = {}
+  //   let path = "/oneliners"
+  //   return this.apigClient.invokeApi(params, path, method, additionalParams, body)
+  //   //return this.http.put(`${this.baseUrl}/selectStoryByOneLiner.php`, oneLinerObj)
+  // }
 
   getStoriesByOneLiner(oneLineObj) {
-    let data = { "oneLiner": oneLineObj.oneLiner }
+    let data = { }
     let method = "GET"
     let body = this.apiService.getRequestBody(method, data)
     let params = { "oneLiner": oneLineObj.oneLiner }
     let additionalParams = {}
-    let path = "/stories"
+    let path = "/stories?oneLiner=" + oneLineObj.oneLiner
     return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
