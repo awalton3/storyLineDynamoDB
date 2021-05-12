@@ -71,17 +71,19 @@ export class SubmitStoryComponent implements OnInit, AfterViewInit {
       numUpVotes: 0
     }
 
-    this.sql.insertStory(storyObj).subscribe(res => {
+    this.sql.insertStory(storyObj)
+      .then(res => {
+        console.log(res)
+        this.snackBarService.onOpenSnackBar.next({ message: "Your story was successfully published", isError: false })
+        // setTimeout(function(){ }, 4000);
+        this._bottomSheetRef.dismiss()
+        this.sql.onInsertStory.next(storyObj);
 
-      this.snackBarService.onOpenSnackBar.next({ message: "Your story was successfully published", isError: false })
-      // setTimeout(function(){ }, 4000);
-      this._bottomSheetRef.dismiss()
-      this.sql.onInsertStory.next(storyObj);
-
-    }, error => {
-      if (error.statusText === 'Created')
-        this.snackBarService.onOpenSnackBar.next({ message: "Plagiarism!", isError: true })
-    })
+      })
+      .catch(error => {
+        if (error.statusText === 'Created')
+          this.snackBarService.onOpenSnackBar.next({ message: "Plagiarism!", isError: true })
+      })
   }
 
 

@@ -83,19 +83,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   fetchStories(oneLinerObj) {
     sessionStorage.setItem('oneLiner', oneLinerObj.oneLiner)
-    this.subs.add(this.sql.selectStoryByOneLiner(oneLinerObj).subscribe(res => {
-      this.selectedStories = res;
+    this.sql.selectStoryByOneLiner(oneLinerObj)
+      .then(res => {
+        this.selectedStories = res;
 
-      let stories = res;
-      this.openStoriesView(stories, oneLinerObj.oneLiner);
+        let stories = res;
+        this.openStoriesView(stories, oneLinerObj.oneLiner);
 
-      if (res[0]['exist'] == 1) {
-        this.storiesExist = 1;
-      }
+        if (res[0]['exist'] == 1) {
+          this.storiesExist = 1;
+        }
 
-      this.selectedOneliner = oneLinerObj.oneLiner
-      this.sql.selectedOneliner = oneLinerObj.oneLiner;
-    }))
+        this.selectedOneliner = oneLinerObj.oneLiner
+        this.sql.selectedOneliner = oneLinerObj.oneLiner;
+      })
+      .catch(error => console.log(error))
   }
 
   openStoriesView(stories: any, oneLiner: string) {
