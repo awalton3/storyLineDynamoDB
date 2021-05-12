@@ -61,7 +61,6 @@ export class SQLService {
   }
 
   insertStory(storyObj): any {
-    console.log(storyObj)
     // return this.http.post(`${this.baseUrl}/insertStory.php`, storyObj);
     let data = {
       "storyHashID": shajs('sha256').update(storyObj.story).digest('hex'),
@@ -84,6 +83,16 @@ export class SQLService {
 
   selectStoryByOneLiner(oneLinerObj) {
     return this.http.put(`${this.baseUrl}/selectStoryByOneLiner.php`, oneLinerObj)
+  }
+
+  getStoriesByOneLiner(oneLineObj) {
+    let data = { "oneLiner": oneLineObj.oneLiner }
+    let method = "GET"
+    let body = this.apiService.getRequestBody(method, data)
+    let params = { "oneLiner": oneLineObj.oneLiner }
+    let additionalParams = {}
+    let path = "/stories"
+    return this.apigClient.invokeApi(params, path, method, additionalParams, body)
   }
 
   getMyStories() {
